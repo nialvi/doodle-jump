@@ -1,5 +1,5 @@
 body {
-  background-color: gray;
+  background-color: #fff8f1;
 }
 
 .start {
@@ -10,21 +10,22 @@ body {
 .grid {
   width: 400px;
   height: 600px;
-  background-color: yellow;
+  background-color: #f7f1ec;
+  background-image: url("./background.png");
   position: relative;
   margin: 0 auto;
 }
 
 .doodler {
-  width: 60px;
-  height: 75px;
-  background-color: red;
+  width: 87px;
+  height: 85px;
   position: absolute;
+  background-image: url("./doodler.png");
 }
 
 .platform {
   width: 85px;
   height: 15px;
-  background-color: green;
+  background-image: url("./platform.png");
   position: absolute;
 }

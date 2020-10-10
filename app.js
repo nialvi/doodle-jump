@@ -102,7 +102,7 @@ function initGame() {
         if (
           doodlerBottomSpace >= platform.bottom &&
           doodlerBottomSpace <= platform.bottom + 15 &&
-          doodlerLeftSpace + 60 >= platform.left &&
+          doodlerLeftSpace + 87 >= platform.left &&
           doodlerLeftSpace <= platform.left + 85 &&
           !isJumping
         ) {
