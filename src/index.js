@@ -1,3 +1,5 @@
+import { clearScreen } from "./screen";
+
 document.addEventListener("DOMContentLoaded", () => {
   const config = {
     startPoint: 150,
@@ -7,10 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   initGame(config);
 });
-
-function clearScreen(screen) {
-  screen.innerHTML = "";
-}
 
 function gameOver(screen, score) {
   screen.innerHTML = score;
