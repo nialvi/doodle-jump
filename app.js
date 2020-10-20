@@ -45,7 +45,7 @@ function createPlatform(
   };
 }
 
-function createPlatforms({ screen, platformCount, doodlerLeftSpace }) {
+function createPlatforms({ screen, platformCount, leftSpace }) {
   let result = [];
 
   for (let i = 0; i < platformCount; i++) {
@@ -55,7 +55,7 @@ function createPlatforms({ screen, platformCount, doodlerLeftSpace }) {
     let left;
 
     if (i === 0) {
-      left = doodlerLeftSpace;
+      left = leftSpace;
     }
 
     let newPlatform = createPlatform(screen, newPlatformBottom, left);
@@ -71,8 +71,8 @@ function moveStraight(leftTimer, rightTimer) {
   clearInterval(rightTimer);
 }
 
-function movePlatforms(platforms, doodlerBottomSpace) {
-  if (doodlerBottomSpace > 150) {
+function movePlatforms(platforms, bottomSpace) {
+  if (bottomSpace > 150) {
     platforms.forEach((platform) => {
       platform.bottom -= 2;
       platform.element.style.bottom = `${platform.bottom}px`;
@@ -86,177 +86,167 @@ function movePlatforms(platforms, doodlerBottomSpace) {
   }
 }
 
+function jump(state) {
+  state.doodler.isJumping = true;
+  state.timers.up = setInterval(() => {
+    state.doodler.bottomSpace += 5;
+    state.doodler.element.style.bottom = `${state.doodler.bottomSpace}px`;
+
+    if (state.doodler.bottomSpace > state.screen.startPoint + 200) {
+      fall(state);
+    }
+  }, state.frameMs);
+}
+
+function fall(state) {
+  state.doodler.isJumping = false;
+  clearInterval(state.timers.up);
+  state.timers.fallDown = setInterval(() => {
+    state.doodler.bottomSpace -= 5;
+    state.doodler.element.style.bottom = `${state.doodler.bottomSpace}px`;
+
+    if (state.doodler.bottomSpace <= 0) {
+      clearInterval(state.timers.fallDown);
+      gameOver(state.screen.element, state.score);
+    }
+
+    state.platforms.forEach((platform) => {
+      if (
+        state.doodler.bottomSpace >= platform.bottom &&
+        state.doodler.bottomSpace <= platform.bottom + 15 &&
+        state.doodler.leftSpace + 87 >= platform.left &&
+        state.doodler.leftSpace <= platform.left + 85 &&
+        !state.isJumping
+      ) {
+        clearInterval(state.timers.fallDown);
+        state.screen.startPoint = state.doodler.bottomSpace;
+        state.score += 1;
+        jump(state);
+      }
+    });
+  }, state.frameMs);
+}
+
+function moveRight(state) {
+  clearInterval(state.timers.right);
+  clearInterval(state.timers.left);
+
+  state.timers.right = setInterval(() => {
+    if (state.doodler.leftSpace <= 340) {
+      state.doodler.leftSpace += 3;
+      state.doodler.element.style.left = `${state.doodler.leftSpace}px`;
+    } else {
+      clearInterval(state.timers.right);
+    }
+  }, state.frameMs);
+}
+
+function moveLeft(state) {
+  clearInterval(state.timers.left);
+  clearInterval(state.timers.right);
+
+  state.timers.left = setInterval(() => {
+    if (state.doodler.leftSpace >= 0) {
+      state.doodler.leftSpace -= 3;
+      state.doodler.element.style.left = `${state.doodler.leftSpace}px`;
+    } else {
+      clearInterval(state.timers.left);
+    }
+  }, state.frameMs);
+}
+
+function control(e, state) {
+  switch (e.key) {
+    case "ArrowLeft": {
+      moveLeft(state);
+      break;
+    }
+
+    case "ArrowRight": {
+      moveRight(state);
+      break;
+    }
+
+    case "ArrowUp": {
+      moveStraight(state.timers.left, state.timers.right);
+      break;
+    }
+
+    case " ": {
+      start(state);
+      break;
+    }
+
+    default:
+      break;
+  }
+}
+
+function start(state) {
+  Object.keys(state.timers).forEach((name) =>
+    clearInterval(state.timers[name])
+  );
+
+  clearScreen(state.screen.element);
+
+  state.platforms = createPlatforms({
+    screen: state.screen.element,
+    platformCount: state.platformCount,
+    leftSpace: state.doodler.leftSpace,
+  });
+  renderDoodler({
+    screen: state.screen.element,
+    doodler: state.doodler.element,
+    leftSpace: state.doodler.leftSpace,
+    bottomSpace: state.doodler.bottomSpace,
+  });
+  movePlatforms(state.platforms, state.doodler.bottomSpace);
+
+  jump(state);
+
+  state.timers.platforms = setInterval(() => {
+    movePlatforms(state.platforms, state.doodler.bottomSpace);
+  }, state.frameMs);
+}
+
 function initGame({
-  startPoint,
+  startPoint: initialStartPoint,
   screen,
   buttonStart,
   doodler,
-  isGameOver = false,
   isJumping = true,
   platformCount = 5,
   frameMs = 16,
   score = 0,
   platforms = [],
 }) {
-  let doodlerLeftSpace = startPoint;
-  let doodlerBottomSpace = startPoint;
-  let timerPlatforms;
-  let upTimer;
-  let fallDownTimer;
-  let leftTimer;
-  let rightTimer;
-
-  function resetGame(platforms) {
-    clearScreen(screen);
-    clearInterval(timerPlatforms);
-    clearInterval(upTimer);
-    clearInterval(fallDownTimer);
-    clearInterval(leftTimer);
-    doodlerBottomSpace = startPoint;
-    doodlerLeftSpace = startPoint;
-    platforms = [];
-    score = 0;
-
-    document.removeEventListener("keyup", control);
-  }
-
-  function start() {
-    resetGame(platforms);
-
-    if (!isGameOver) {
-      platforms = createPlatforms({ screen, platformCount, doodlerLeftSpace });
-      renderDoodler({
-        screen,
-        doodler,
-        leftSpace: doodlerLeftSpace,
-        bottomSpace: doodlerBottomSpace,
-      });
-      movePlatforms(platforms, doodlerBottomSpace);
-
-      // TODO do otherwise jump and fall
-      // moveDoodler({
-      //   screen,
-      //   doodlerBottomSpace,
-      //   doodler,
-      //   startPoint,
-      //   frameMs,
-      //   upTimer,
-      //   fallDownTimer,
-      //   score,
-      //   doodlerLeftSpace,
-      //   platforms,
-      //   isJumping,
-      //   gameOver,
-      // });
-      jump();
-
-      function jump() {
-        isJumping = true;
-        upTimer = setInterval(() => {
-          doodlerBottomSpace += 5;
-
-          doodler.style.bottom = `${doodlerBottomSpace}px`;
-
-          if (doodlerBottomSpace > startPoint + 200) {
-            fall();
-          }
-        }, frameMs);
-      }
-
-      function fall() {
-        isJumping = false;
-        clearInterval(upTimer);
-        fallDownTimer = setInterval(() => {
-          doodlerBottomSpace -= 5;
-          doodler.style.bottom = `${doodlerBottomSpace}px`;
-
-          if (doodlerBottomSpace <= 0) {
-            clearInterval(fallDownTimer);
-            gameOver(screen, score);
-          }
-
-          platforms.forEach((platform) => {
-            if (
-              doodlerBottomSpace >= platform.bottom &&
-              doodlerBottomSpace <= platform.bottom + 15 &&
-              doodlerLeftSpace + 87 >= platform.left &&
-              doodlerLeftSpace <= platform.left + 85 &&
-              !isJumping
-            ) {
-              clearInterval(fallDownTimer);
-              startPoint = doodlerBottomSpace;
-              score += 1;
-              jump();
-            }
-          });
-        }, frameMs);
-      }
-
-      document.addEventListener("keyup", control);
-
-      timerPlatforms = setInterval(() => {
-        movePlatforms(platforms, doodlerBottomSpace);
-      }, frameMs);
-    }
-  }
-
-  function control(e) {
-    switch (e.key) {
-      case "ArrowLeft": {
-        moveLeft();
-        break;
-      }
-
-      case "ArrowRight": {
-        moveRight();
-        break;
-      }
-
-      case "ArrowUp": {
-        moveStraight(leftTimer, rightTimer);
-        break;
-      }
-
-      case " ": {
-        start();
-        break;
-      }
-
-      default:
-        break;
-    }
-  }
-
-  // TODO do otherwise move actions
-  function moveLeft() {
-    clearInterval(leftTimer);
-    clearInterval(rightTimer);
-
-    leftTimer = setInterval(() => {
-      if (doodlerLeftSpace >= 0) {
-        doodlerLeftSpace -= 3;
-        doodler.style.left = `${doodlerLeftSpace}px`;
-      } else {
-        clearInterval(leftTimer);
-      }
-    }, frameMs);
-  }
-
-  function moveRight() {
-    clearInterval(rightTimer);
-    clearInterval(leftTimer);
-
-    rightTimer = setInterval(() => {
-      if (doodlerLeftSpace <= 340) {
-        doodlerLeftSpace += 3;
-        doodler.style.left = `${doodlerLeftSpace}px`;
-      } else {
-        clearInterval(rightTimer);
-      }
-    }, frameMs);
-  }
+  const initialState = {
+    screen: {
+      startPoint: initialStartPoint,
+      element: screen,
+    },
+    doodler: {
+      element: doodler,
+      leftSpace: initialStartPoint,
+      bottomSpace: initialStartPoint,
+      isJumping,
+    },
+    timers: {
+      up: 0,
+      left: 0,
+      right: 0,
+      platforms: 0,
+      fallDown: 0,
+    },
+    score,
+    platforms,
+    frameMs,
+    platformCount,
+  };
 
   buttonStart.addEventListener("click", () => {
-    start();
+    start(initialState);
   });
+
+  document.addEventListener("keyup", (e) => control(e, initialState));
 }
