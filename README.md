@@ -11,15 +11,15 @@ Doodle jump game clone on html, css, javascript.
 TODO
 
 - refactoring
-  - add constants
-  - extract module
-  - add unit tests
-  - add integration tests
+  - [x] add constants
+  - [x] extract module
+  - [ ] add unit tests
+  - [ ] add integration tests
 - mobile
-  - touch events
-  - add responsive
+  - [ ] touch events
+  - [ ] add responsive
 - perfomance
-  - requestanimation frame
-  - do better painting and layout
+  - [ ] requestanimation frame
+  - [ ] do better painting and layout
 - bugs
-  - start a game out of screen
+  - [ ] start a game out of screen
