@@ -6,7 +6,9 @@
   "scripts": {
     "build": "npx webpack",
     "dev": "npx webpack --watch --progress",
-    "test": "jest"
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch"
   },
   "repository": {
     "type": "git",
