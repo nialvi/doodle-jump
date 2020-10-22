@@ -5,5 +5,5 @@ test("it should clear screen", () => {
   screen.innerHTML = "content";
 
   clearScreen(screen);
-  expect(screen.innerHTML).toBe("");
+  expect(screen).toBeEmptyDOMElement();
 });
