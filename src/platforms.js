@@ -46,7 +46,6 @@ export function movePlatforms(platforms, bottomSpace) {
     platforms.forEach((platform) => {
       platform.bottom -= 2;
       platform.element.style.bottom = `${platform.bottom}px`;
-      platform.element.style.left = `${platform.left}px`;
 
       if (platform.bottom <= 5) {
         platform.bottom = 600;

@@ -15,7 +15,6 @@ TODO
   - [x] extract module
   - [ ] add linter + prettier + husky
   - [ ] add unit tests
-  - [ ] add unit tests
   - [ ] add integration tests
 - mobile
   - [ ] touch events
