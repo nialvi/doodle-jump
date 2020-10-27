@@ -1,3 +1,3 @@
 export function clearScreen(screen) {
-  screen.innerHTML = "";
+	screen.innerHTML = '';
 }
