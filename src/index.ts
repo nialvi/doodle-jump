@@ -1,4 +1,4 @@
-import { initGame, InitConfig } from './game';
+import { initGame, InitConfig } from './app';
 
 document.addEventListener('DOMContentLoaded', () => {
 	const config: InitConfig = {

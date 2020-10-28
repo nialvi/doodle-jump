@@ -1,31 +1,31 @@
 body {
-  background-color: #fff8f1;
+	background-color: #fff8f1;
 }
 
 .start {
-  display: block;
-  margin: 0 auto;
+	display: block;
+	margin: 0 auto;
 }
 
 .screen {
-  width: 400px;
-  height: 600px;
-  background-color: #f7f1ec;
-  background-image: url("./background.png");
-  position: relative;
-  margin: 0 auto;
+	width: 400px;
+	height: 600px;
+	background-color: #f7f1ec;
+	background-image: url('./src/static/background.png');
+	position: relative;
+	margin: 0 auto;
 }
 
 .doodler {
-  width: 87px;
-  height: 85px;
-  position: absolute;
-  background-image: url("./doodler.png");
+	width: 87px;
+	height: 85px;
+	position: absolute;
+	background-image: url('./src/static/doodler.png');
 }
 
 .platform {
-  width: 85px;
-  height: 15px;
-  background-image: url("./platform.png");
-  position: absolute;
+	width: 85px;
+	height: 15px;
+	background-image: url('./src/static/platform.png');
+	position: absolute;
 }

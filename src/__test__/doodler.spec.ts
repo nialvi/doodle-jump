@@ -1,4 +1,4 @@
-import { renderDoodler } from '../doodler';
+import { renderDoodler } from '../app/doodler';
 
 test('should render doodler on screen', () => {
 	const screen = document.createElement('div');

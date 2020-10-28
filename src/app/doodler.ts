@@ -1,4 +1,4 @@
-import { InitialState } from './game';
+import { InitialState } from '.';
 
 interface IRenderDoodlerParams {
 	screen: HTMLElement;

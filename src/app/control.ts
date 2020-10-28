@@ -1,4 +1,4 @@
-import { start, InitialState } from './game';
+import { start, InitialState } from '.';
 
 export function moveStraight(
 	leftTimer: NodeJS.Timeout,

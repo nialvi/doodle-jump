@@ -1,4 +1,8 @@
-import { createPlatform, createPlatforms, movePlatforms } from '../platforms';
+import {
+	createPlatform,
+	createPlatforms,
+	movePlatforms,
+} from '../app/platforms';
 
 test('should render platform on screen', () => {
 	const screen = document.createElement('div');

@@ -1,4 +1,4 @@
-import { clearScreen } from '../screen';
+import { clearScreen } from '../app/screen';
 
 test('it should clear screen', () => {
 	const screen = document.createElement('div');

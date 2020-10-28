@@ -4,13 +4,15 @@ Doodle jump game clone on html, css, javascript.
 
 ## Commands
 
+`npm start` - start game app
+
 `npm build` - build code in bundle
 
 `npm run dev` - watch mode for development
 
 `git ci -am "commit" --no-verify` - disable husky
 
-TODO
+## TODO
 
 - refactoring
   - [x] add constants
