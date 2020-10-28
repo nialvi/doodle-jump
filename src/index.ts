@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		screen: document.querySelector('.screen'),
 		buttonStart: document.querySelector('.start'),
 		doodler: document.createElement('div'),
+		kek: 0,
 	};
 
 	initGame(config);
