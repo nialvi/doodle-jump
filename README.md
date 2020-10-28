@@ -15,8 +15,8 @@ TODO
 - refactoring
   - [x] add constants
   - [x] extract module
-  - [ ] add linter + prettier + husky
-  - [ ] add unit tests
+  - [x] add linter + prettier + husky
+  - [x] add unit tests
   - [ ] add integration tests
 - mobile
   - [ ] touch events
