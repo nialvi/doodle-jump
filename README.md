@@ -8,6 +8,8 @@ Doodle jump game clone on html, css, javascript.
 
 `npm run dev` - watch mode for development
 
+`git ci -am "commit" --no-verify` - disable husky
+
 TODO
 
 - refactoring
