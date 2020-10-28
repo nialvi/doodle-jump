@@ -1,11 +1,14 @@
-import { start } from './game';
+import { start, InitialState } from './game';
 
-export function moveStraight(leftTimer, rightTimer) {
+export function moveStraight(
+	leftTimer: NodeJS.Timeout,
+	rightTimer: NodeJS.Timeout
+): void {
 	clearInterval(leftTimer);
 	clearInterval(rightTimer);
 }
 
-export function moveRight(state) {
+export function moveRight(state: InitialState): void {
 	clearInterval(state.timers.right);
 	clearInterval(state.timers.left);
 
@@ -19,7 +22,7 @@ export function moveRight(state) {
 	}, state.frameMs);
 }
 
-export function moveLeft(state) {
+export function moveLeft(state: InitialState): void {
 	clearInterval(state.timers.left);
 	clearInterval(state.timers.right);
 
@@ -33,7 +36,7 @@ export function moveLeft(state) {
 	}, state.frameMs);
 }
 
-export function control(e, state) {
+export function control(e: KeyboardEvent, state: InitialState): void {
 	switch (e.key) {
 		case 'ArrowLeft': {
 			moveLeft(state);

@@ -1,11 +1,25 @@
-export function renderDoodler({ screen, doodler, leftSpace, bottomSpace }) {
+import { InitialState } from './game';
+
+interface IRenderDoodlerParams {
+	screen: HTMLElement;
+	doodler: HTMLElement;
+	leftSpace: number;
+	bottomSpace: number;
+}
+
+export function renderDoodler({
+	screen,
+	doodler,
+	leftSpace,
+	bottomSpace,
+}: IRenderDoodlerParams): void {
 	screen.appendChild(doodler);
 	doodler.classList.add('doodler');
 	doodler.style.left = `${leftSpace}px`;
 	doodler.style.bottom = `${bottomSpace}px`;
 }
 
-export function jump(state) {
+export function jump(state: InitialState): void {
 	state.doodler.isJumping = true;
 	state.timers.up = setInterval(() => {
 		state.doodler.bottomSpace += 5;
@@ -17,11 +31,11 @@ export function jump(state) {
 	}, state.frameMs);
 }
 
-export function gameOver(screen, score) {
-	screen.innerHTML = score;
+export function gameOver(screen: HTMLElement, score: number): void {
+	screen.innerHTML = String(score);
 }
 
-function fall(state) {
+function fall(state: InitialState): void {
 	state.doodler.isJumping = false;
 	clearInterval(state.timers.up);
 	state.timers.fallDown = setInterval(() => {
@@ -39,7 +53,7 @@ function fall(state) {
 				state.doodler.bottomSpace <= platform.bottom + 15 &&
 				state.doodler.leftSpace + 87 >= platform.left &&
 				state.doodler.leftSpace <= platform.left + 85 &&
-				!state.isJumping
+				!state.doodler.isJumping
 			) {
 				clearInterval(state.timers.fallDown);
 				state.screen.startPoint = state.doodler.bottomSpace;

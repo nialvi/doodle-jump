@@ -1,14 +1,7 @@
-import { initGame } from './game';
-
-type Config = {
-	startPoint: number;
-	screen: HTMLElement;
-	buttonStart: HTMLElement;
-	doodler: HTMLElement;
-};
+import { initGame, InitConfig } from './game';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const config: Config = {
+	const config: InitConfig = {
 		startPoint: 150,
 		screen: document.querySelector('.screen'),
 		buttonStart: document.querySelector('.start'),

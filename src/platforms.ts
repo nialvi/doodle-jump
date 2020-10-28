@@ -1,8 +1,14 @@
+export interface IPlatform {
+	bottom: number;
+	left: number;
+	element: HTMLElement;
+}
+
 export function createPlatform(
-	screen,
-	bottomPosition,
+	screen: HTMLElement,
+	bottomPosition: number,
 	leftPosition = Math.random() * 315
-) {
+): IPlatform {
 	const bottom = bottomPosition;
 	const left = leftPosition;
 	const element = document.createElement('div');
@@ -20,12 +26,22 @@ export function createPlatform(
 	};
 }
 
-export function createPlatforms({ screen, platformCount, leftSpace }) {
-	let result = [];
+type ConfigCreatePlatforms = {
+	screen: HTMLElement;
+	platformCount: number;
+	leftSpace: number;
+};
+
+export function createPlatforms({
+	screen,
+	platformCount,
+	leftSpace,
+}: ConfigCreatePlatforms): IPlatform[] {
+	const result = [];
+	const platformGap = 600 / platformCount;
 
 	for (let i = 0; i < platformCount; i++) {
-		let platformGap = 600 / platformCount;
-		let newPlatformBottom = 100 + i * platformGap;
+		const newPlatformBottom = 100 + i * platformGap;
 
 		let left;
 
@@ -33,7 +49,7 @@ export function createPlatforms({ screen, platformCount, leftSpace }) {
 			left = leftSpace;
 		}
 
-		let newPlatform = createPlatform(screen, newPlatformBottom, left);
+		const newPlatform = createPlatform(screen, newPlatformBottom, left);
 
 		result.push(newPlatform);
 	}
@@ -41,7 +57,10 @@ export function createPlatforms({ screen, platformCount, leftSpace }) {
 	return result;
 }
 
-export function movePlatforms(platforms, bottomSpace) {
+export function movePlatforms(
+	platforms: IPlatform[],
+	bottomSpace: number
+): void {
 	if (bottomSpace > 150) {
 		platforms.forEach(platform => {
 			platform.bottom -= 2;

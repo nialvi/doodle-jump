@@ -1,9 +1,9 @@
 import { clearScreen } from './screen';
 import { renderDoodler, jump } from './doodler';
-import { createPlatforms, movePlatforms } from './platforms';
+import { createPlatforms, movePlatforms, IPlatform } from './platforms';
 import { control } from './control';
 
-export function start(state) {
+export function start(state: InitialState): void {
 	Object.keys(state.timers).forEach(name => clearInterval(state.timers[name]));
 
 	clearScreen(state.screen.element);
@@ -30,6 +30,42 @@ export function start(state) {
 	}, state.frameMs);
 }
 
+export type InitConfig = {
+	startPoint: number;
+	screen: HTMLElement;
+	buttonStart: HTMLElement;
+	doodler: HTMLElement;
+	isJumping?: boolean;
+	platformCount?: number;
+	frameMs?: number;
+	score?: number;
+	platforms?: IPlatform[];
+};
+
+export type InitialState = {
+	screen: {
+		startPoint: number;
+		element: HTMLElement;
+	};
+	doodler: {
+		element: HTMLElement;
+		leftSpace: number;
+		bottomSpace: number;
+		isJumping: boolean;
+	};
+	timers: {
+		up: NodeJS.Timeout;
+		left: NodeJS.Timeout;
+		right: NodeJS.Timeout;
+		platforms: NodeJS.Timeout;
+		fallDown: NodeJS.Timeout;
+	};
+	score: number;
+	platforms: IPlatform[];
+	frameMs: number;
+	platformCount: number;
+};
+
 export function initGame({
 	startPoint,
 	screen,
@@ -40,8 +76,8 @@ export function initGame({
 	frameMs = 16,
 	score = 0,
 	platforms = [],
-}) {
-	const initialState = {
+}: InitConfig): void {
+	const initialState: InitialState = {
 		screen: {
 			startPoint,
 			element: screen,
@@ -53,11 +89,11 @@ export function initGame({
 			isJumping,
 		},
 		timers: {
-			up: 0,
-			left: 0,
-			right: 0,
-			platforms: 0,
-			fallDown: 0,
+			up: null,
+			left: null,
+			right: null,
+			platforms: null,
+			fallDown: null,
 		},
 		score,
 		platforms,
