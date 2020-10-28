@@ -10,10 +10,11 @@
 		"test:watch": "jest --watch",
 		"check-types": "tsc",
 		"test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch",
-		"lint": "eslint --ignore-path .gitignore .",
-		"format": "prettier --ignore-path .gitignore --write \"**/*.+(js|json)\"",
-		"check-format": "prettier --ignore-path .gitignore --list-different \"**/*.+(js|json)\"",
-		"validate": "npm run check-types && npm run check--format && npm run lint && npm run build"
+		"lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
+		"prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
+		"format": "npm run prettier -- --write",
+		"check-format": "npm run prettier -- --list-different",
+		"validate": "npm run check-types && npm run check-format && npm run lint && npm run build"
 	},
 	"repository": {
 		"type": "git",
@@ -30,6 +31,8 @@
 		"@babel/preset-env": "^7.12.1",
 		"@babel/preset-typescript": "^7.12.1",
 		"@testing-library/jest-dom": "^5.11.4",
+		"@typescript-eslint/eslint-plugin": "^4.6.0",
+		"@typescript-eslint/parser": "^4.6.0",
 		"babel-loader": "^8.1.0",
 		"eslint": "^7.12.1",
 		"eslint-config-prettier": "^6.15.0",

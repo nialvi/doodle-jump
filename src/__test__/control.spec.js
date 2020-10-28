@@ -1,4 +1,4 @@
-import { moveStraight, moveRight, moveLeft, control } from '../control';
+import { moveStraight, moveRight, moveLeft } from '../control';
 
 beforeEach(jest.useFakeTimers);
 
