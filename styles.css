@@ -5,6 +5,14 @@ body {
 .start {
 	display: block;
 	margin: 0 auto;
+
+	padding: 8px 32px;
+	margin-top: 8px;
+
+	border-radius: 6px;
+	border: 1px solid #e6d0bc;
+	background-color: white;
+	outline-color: #e6d0bc;
 }
 
 .screen {
