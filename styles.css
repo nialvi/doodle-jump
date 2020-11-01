@@ -22,6 +22,9 @@ body {
 	background-image: url('./src/static/background.png');
 	position: relative;
 	margin: 0 auto;
+
+	text-align: center;
+	font: 170%/3 'Merriweather', 'Georgia', serif;
 }
 
 .doodler {

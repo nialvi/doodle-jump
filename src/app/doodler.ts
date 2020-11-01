@@ -32,7 +32,7 @@ export function jump(state: InitialState): void {
 }
 
 export function gameOver(screen: HTMLElement, score: number): void {
-	screen.innerHTML = String(score);
+	screen.innerHTML = `Your score: ${String(score)}`;
 }
 
 function fall(state: InitialState): void {
