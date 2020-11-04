@@ -5,6 +5,8 @@ import {
 	actions as gameActions,
 } from './app/game/entities';
 
+import { render as renderScore } from './app/game/view/score';
+
 document.addEventListener('DOMContentLoaded', () => {
 	const config: InitConfig = {
 		startPoint: 150,
@@ -37,7 +39,7 @@ function initGameEngine() {
 
 			store.dispatch(gameActions.setScore(newScore));
 
-			scoreElement.innerHTML = String(newScore);
+			renderScore(scoreElement, newScore);
 		}, 150);
 	});
 
