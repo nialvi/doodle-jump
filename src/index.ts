@@ -1,5 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { initGame, InitConfig } from './app';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+// import { initGame, InitConfig } from './app';
 import {
 	reducer as gameReducer,
 	actions as gameActions,
@@ -9,16 +9,18 @@ import {
 	reducer as sceneReducer,
 	actions as sceneActions,
 } from './app/scene/entities';
+import { player } from './app/object/entities/player/entities';
+import { render as renderPlayer } from './app/object/entities/player/view';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const config: InitConfig = {
-		startPoint: 150,
-		screen: document.querySelector('.screen'),
-		buttonStart: document.querySelector('.start'),
-		doodler: document.createElement('div'),
-	};
+	// const config: InitConfig = {
+	// 	startPoint: 150,
+	// 	screen: document.querySelector('.screen'),
+	// 	buttonStart: document.querySelector('.start'),
+	// 	doodler: document.createElement('div'),
+	// };
 
-	initGame(config);
+	// initGame(config);
 
 	initGameEngine();
 });
@@ -27,14 +29,21 @@ function initGameEngine() {
 	const store = configureStore({
 		reducer: { game: gameReducer, scene: sceneReducer },
 		devTools: true,
+		middleware: getDefaultMiddleware({
+			serializableCheck: { ignoredActions: [sceneActions.setObject.type] },
+		}),
 	});
 
 	let gameLoopId;
 
+	const root = document.body;
 	const startElement = document.getElementById('start');
 	const endElement = document.getElementById('end');
 	const scoreElement = document.getElementById('score');
 	const logElement = document.getElementById('log');
+	const playerElement = document.createElement('div');
+
+	root.appendChild(playerElement);
 
 	startElement.addEventListener('click', () => {
 		store.dispatch(gameActions.setScene('inprogress'));
@@ -46,15 +55,8 @@ function initGameEngine() {
 			})
 		);
 
-		// set doodler
-		store.dispatch(
-			sceneActions.setObject({
-				x: 10,
-				y: 20,
-				width: 33,
-				height: 46,
-			})
-		);
+		store.dispatch(sceneActions.setObject(player));
+		renderPlayer(playerElement, player);
 
 		// set platform
 		store.dispatch(
@@ -66,19 +68,31 @@ function initGameEngine() {
 			})
 		);
 
-		gameLoopId = setInterval(() => {
+		gameLoopId = requestAnimationFrame(function render(t) {
 			const { game } = store.getState();
 			const newScore = game.score + 1;
 
+			console.log('render');
+
 			store.dispatch(gameActions.setScore(newScore));
 
-			renderScore(scoreElement, newScore);
-		}, 150);
+			if (player.x < window.outerWidth) {
+				player.x = player.x + 1;
+				renderScore(scoreElement, newScore);
+				store.dispatch(sceneActions.setObject(player));
+				renderPlayer(playerElement, player);
+
+				requestAnimationFrame(render);
+			}
+		});
 	});
 
 	endElement.addEventListener('click', () => {
 		store.dispatch(gameActions.setScene('end'));
-		clearInterval(gameLoopId);
+		player.x = 0;
+		store.dispatch(sceneActions.setObject(player));
+		renderPlayer(playerElement, player);
+		cancelAnimationFrame(gameLoopId);
 	});
 
 	logElement.addEventListener('click', () => {

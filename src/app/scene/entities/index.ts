@@ -40,7 +40,12 @@ export const { reducer, actions } = createSlice({
 					Array.from(Array(yCount).keys())
 						.slice(y / MESH_STEP)
 						.forEach(yIndex => {
-							state.mesh[xIndex][yIndex] = 1;
+							if (
+								xIndex < state.mesh.length &&
+								yIndex < state.mesh[xIndex].length
+							) {
+								state.mesh[xIndex][yIndex] = 1;
+							}
 						});
 				});
 		},
