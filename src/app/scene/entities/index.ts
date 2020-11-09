@@ -19,25 +19,25 @@ export const { reducer, actions } = createSlice({
 				payload: { width, height },
 			}: PayloadAction<{ width: number; height: number }>
 		) => {
-			const xCount = Math.round(width / MESH_STEP);
-			const yCoutn = Math.round(height / MESH_STEP);
+			const xCells = Math.round(width / MESH_STEP);
+			const yCells = Math.round(height / MESH_STEP);
 
 			return {
 				...state,
-				mesh: [...Array(xCount)].map(() => [...Array(yCoutn)].map(() => 0)),
+				mesh: [...Array(xCells)].map(() => [...Array(yCells)].map(() => 0)),
 			};
 		},
 		setObject: (
 			state,
 			{ payload: { x, y, width, height } }: PayloadAction<IObject>
 		) => {
-			const xCount = Math.round((x + width) / MESH_STEP);
-			const yCount = Math.round((y + height) / MESH_STEP);
+			const widthCells = Math.round((x + width) / MESH_STEP);
+			const heightCells = Math.round((y + height) / MESH_STEP);
 
-			Array.from(Array(xCount).keys())
+			Array.from(Array(widthCells).keys())
 				.slice(x / MESH_STEP)
 				.forEach(xIndex => {
-					Array.from(Array(yCount).keys())
+					Array.from(Array(heightCells).keys())
 						.slice(y / MESH_STEP)
 						.forEach(yIndex => {
 							if (

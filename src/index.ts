@@ -46,6 +46,7 @@ function initGameEngine() {
 	root.appendChild(playerElement);
 
 	startElement.addEventListener('click', () => {
+		// game.init();
 		store.dispatch(gameActions.setScene('inprogress'));
 
 		store.dispatch(
@@ -68,6 +69,8 @@ function initGameEngine() {
 			})
 		);
 
+		//game.run()
+
 		gameLoopId = requestAnimationFrame(function render(t) {
 			const { game } = store.getState();
 			const newScore = game.score + 1;
@@ -80,7 +83,14 @@ function initGameEngine() {
 				player.x = player.x + 1;
 				renderScore(scoreElement, newScore);
 				store.dispatch(sceneActions.setObject(player));
+
+				// store.dispatch(sceneActions.setObjects([player, platform1, platform2]));
+
 				renderPlayer(playerElement, player);
+
+				// initialScene.render();
+
+				// initialScene.render();
 
 				requestAnimationFrame(render);
 			}
@@ -88,6 +98,7 @@ function initGameEngine() {
 	});
 
 	endElement.addEventListener('click', () => {
+		//game.end()
 		store.dispatch(gameActions.setScene('end'));
 		player.x = 0;
 		store.dispatch(sceneActions.setObject(player));
@@ -96,6 +107,7 @@ function initGameEngine() {
 	});
 
 	logElement.addEventListener('click', () => {
+		// game.log()
 		console.log(store.getState());
 	});
 }
