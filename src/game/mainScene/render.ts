@@ -1,4 +1,4 @@
-import { render as renderScore } from '../@engine/game/view/score';
+import { render as renderScore } from '../@engine/view/score';
 // import { render as renderPlayer } from '../player/view/';
 
 interface IElements {

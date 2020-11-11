@@ -2,19 +2,19 @@
 import {
 	reducer as gameReducer,
 	actions as gameActions,
-} from './app/@engine/game/entities';
+} from './game/@engine/entities';
 
 import {
 	reducer as sceneReducer,
 	actions as sceneActions,
-} from './app/mainScene/entities';
-import { reducer as playerReducer } from './app/player/entities';
+} from './game/mainScene/entities';
+import { reducer as playerReducer } from './game/player/entities';
 
-import { init as initStore } from './app/@engine/game/store';
-import { initRender as initGameRender } from './app/@engine/game/usecases';
-import { render as renderStartScene } from './app/startScene/view';
-import { render as renderMainScene } from './app/mainScene/render';
-import { Status } from 'app/@engine/scene/entities/interface';
+import { init as initStore } from './game/@engine/store';
+import { initRender as initGameRender } from './game/@engine/usecases';
+import { render as renderStartScene } from './game/startScene/view';
+import { render as renderMainScene } from './game/mainScene/render';
+import { Status } from 'game/@engine/scene/entities/interface';
 
 document.addEventListener('DOMContentLoaded', () => {
 	// const config: InitConfig = {
