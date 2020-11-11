@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IScene, Status } from './interface';
-import { IObject } from '../../object/entities/interface';
+import { IScene, Status } from '../../@engine/scene/entities/interface';
+import { IObject } from '../../@engine/object/entities/interface';
 
 const initialState: IScene = {
 	status: Status.Inprogress,
