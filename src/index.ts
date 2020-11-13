@@ -1,4 +1,5 @@
 // import { initGame, InitConfig } from './app';
+
 import {
 	reducer as gameReducer,
 	actions as gameActions,
@@ -11,9 +12,9 @@ import {
 import { reducer as playerReducer } from './game/player/entities';
 
 import { init as initStore } from './game/@engine/store';
-import { initRender as initGameRender } from './game/@engine/usecases';
 import { render as renderStartScene } from './game/startScene/view';
 import { render as renderMainScene } from './game/mainScene/render';
+import { render as renderEndScene } from './game/endScene/view';
 import { Status } from 'game/@engine/scene/entities/interface';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -46,16 +47,30 @@ function initGameEngine() {
 
 	root.appendChild(playerElement);
 
-	const gameRender = initGameRender({
-		start: state => {
-			renderStartScene(state, { player: playerElement });
-		},
-		inprogress: state => {
-			renderMainScene(state, { score: scoreElement, player: playerElement });
-		},
-	});
+	const state = store.getState();
+	type State = typeof state;
 
-	gameRender(store.getState());
+	const gameRender = (state: State) => {
+		switch (state.game.scene) {
+			case 'start':
+				renderStartScene(state, { player: playerElement });
+				break;
+
+			case 'inprogress':
+				renderMainScene(state, { score: scoreElement, player: playerElement });
+				break;
+
+			case 'end':
+				renderEndScene(state, { root });
+				break;
+
+			default:
+				console.error('unknown scene');
+				break;
+		}
+	};
+
+	gameRender(state);
 
 	startElement.addEventListener('click', () => {
 		store.dispatch(gameActions.setScene('inprogress'));

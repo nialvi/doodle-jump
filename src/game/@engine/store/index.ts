@@ -3,15 +3,18 @@ import {
 	getDefaultMiddleware,
 	Reducer,
 	ReducersMapObject,
-	Store,
+	EnhancedStore,
 } from '@reduxjs/toolkit';
 
-interface IinitParams {
-	reducer: Reducer | ReducersMapObject;
+interface IinitParams<S> {
+	reducer: Reducer<S> | ReducersMapObject<S>;
 	ignoredActions: string[];
 }
 
-export const init = ({ reducer, ignoredActions }: IinitParams): Store => {
+export const init = <S>({
+	reducer,
+	ignoredActions,
+}: IinitParams<S>): EnhancedStore<S> => {
 	const store = configureStore({
 		reducer,
 		devTools: true,
