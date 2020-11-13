@@ -3,7 +3,7 @@ import { IGame } from './interface';
 
 const initialState: IGame = {
 	score: 0,
-	scene: 'start',
+	// scene: 'start',
 };
 
 export const { reducer, actions } = createSlice({
@@ -14,9 +14,9 @@ export const { reducer, actions } = createSlice({
 			...state,
 			score: payload,
 		}),
-		setScene: (state, { payload }: PayloadAction<string>) => ({
-			...state,
-			scene: payload,
-		}),
+		// setScene: (state, { payload }: PayloadAction<string>) => ({
+		// 	...state,
+		// 	scene: payload,
+		// }),
 	},
 });

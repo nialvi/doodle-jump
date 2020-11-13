@@ -8,7 +8,7 @@ import {
 import {
 	reducer as sceneReducer,
 	actions as sceneActions,
-} from './game/mainScene/entities';
+} from './game/@engine/scene/entities';
 import { reducer as playerReducer } from './game/player/entities';
 
 import { init as initStore } from './game/@engine/store';
@@ -51,7 +51,7 @@ function initGameEngine() {
 	type State = typeof state;
 
 	const gameRender = (state: State) => {
-		switch (state.game.scene) {
+		switch (state.scene.current) {
 			case 'start':
 				renderStartScene(state, { player: playerElement });
 				break;
@@ -73,7 +73,7 @@ function initGameEngine() {
 	gameRender(state);
 
 	startElement.addEventListener('click', () => {
-		store.dispatch(gameActions.setScene('inprogress'));
+		store.dispatch(sceneActions.setScene('inprogress'));
 
 		store.dispatch(
 			sceneActions.setMesh({
@@ -103,7 +103,7 @@ function initGameEngine() {
 
 	endElement.addEventListener('click', () => {
 		store.dispatch(sceneActions.setStatus(Status.Pause));
-		store.dispatch(gameActions.setScene('end'));
+		store.dispatch(sceneActions.setScene('end'));
 
 		cancelAnimationFrame(gameLoopId);
 	});

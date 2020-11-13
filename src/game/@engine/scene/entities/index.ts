@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IScene, Status } from '../../@engine/scene/entities/interface';
-import { IObject } from '../../@engine/object/entities/interface';
+import { IScene, Status, Scene } from './interface';
+import { IObject } from '../../object/entities/interface';
 
 const initialState: IScene = {
+	current: 'start',
 	status: Status.Inprogress,
 	mesh: [[0], [0]],
 };
@@ -49,9 +50,13 @@ export const { reducer, actions } = createSlice({
 						});
 				});
 		},
-		setStatus: (state, { payload }: PayloadAction<Status>) => ({
+		setStatus: (state, { payload }: PayloadAction<Status>): IScene => ({
 			...state,
 			status: payload,
+		}),
+		setScene: (state, { payload }: PayloadAction<Scene>): IScene => ({
+			...state,
+			current: payload,
 		}),
 	},
 });
