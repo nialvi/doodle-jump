@@ -1,7 +1,9 @@
 interface IElements {
 	root: HTMLElement;
+	result: HTMLElement;
 }
 
 export const render = (state: any, elements: IElements): void => {
-	elements.root.innerHTML = `Gameover ${state.game.score}`;
+	elements.result.innerHTML = `Gameover ${state.game.score}`;
+	elements.root.appendChild(elements.result);
 };

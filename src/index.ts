@@ -9,7 +9,11 @@ import {
 	reducer as sceneReducer,
 	actions as sceneActions,
 } from './game/@engine/scene/entities';
-import { reducer as playerReducer } from './game/player/entities';
+import {
+	reducer as playerReducer,
+	actions as playerActions,
+} from './game/player/entities';
+import { movePlayer } from './game/player/useCases';
 
 import { init as initStore } from './game/@engine/store';
 import { render as renderStartScene } from './game/startScene/view';
@@ -36,32 +40,39 @@ function initGameEngine() {
 		ignoredActions: [sceneActions.setObject.type],
 	});
 
-	let gameLoopId;
-
 	const root = document.body;
 	const startElement = document.getElementById('start');
 	const endElement = document.getElementById('end');
 	const scoreElement = document.getElementById('score');
 	const logElement = document.getElementById('log');
 	const playerElement = document.createElement('div');
+	const resultElement = document.createElement('div');
 
 	root.appendChild(playerElement);
 
 	const state = store.getState();
-	type State = typeof state;
+	type Store = typeof store;
 
-	const gameRender = (state: State) => {
+	const gameRender = (store: Store) => {
+		const state = store.getState();
+
 		switch (state.scene.current) {
-			case 'start':
+			case 'start': {
+				const cord = movePlayer(state.player, window.outerWidth);
+
+				store.dispatch(playerActions.move(cord));
 				renderStartScene(state, { player: playerElement });
 				break;
+			}
 
 			case 'inprogress':
+				store.dispatch(gameActions.setScore(state.game.score + 1));
+
 				renderMainScene(state, { score: scoreElement, player: playerElement });
 				break;
 
 			case 'end':
-				renderEndScene(state, { root });
+				renderEndScene(state, { root, result: resultElement });
 				break;
 
 			default:
@@ -70,35 +81,23 @@ function initGameEngine() {
 		}
 	};
 
-	gameRender(state);
+	const gameLoopId = requestAnimationFrame(function render(t) {
+		gameRender(store);
+
+		if (state.scene.status === Status.Inprogress) {
+			requestAnimationFrame(render);
+		}
+	});
 
 	startElement.addEventListener('click', () => {
 		store.dispatch(sceneActions.setScene('inprogress'));
 
-		store.dispatch(
-			sceneActions.setMesh({
-				width: window.outerWidth,
-				height: window.outerHeight,
-			})
-		);
-
-		gameLoopId = requestAnimationFrame(function render(t) {
-			const { game } = store.getState();
-
-			if (Math.round(t) % 4 === 0) {
-				const newScore = game.score + 1;
-
-				store.dispatch(gameActions.setScore(newScore));
-			}
-
-			const state = store.getState();
-
-			gameRender(state);
-
-			if (state.scene.status === Status.Inprogress) {
-				requestAnimationFrame(render);
-			}
-		});
+		// store.dispatch(
+		// 	sceneActions.setMesh({
+		// 		width: window.outerWidth,
+		// 		height: window.outerHeight,
+		// 	})
+		// );
 	});
 
 	endElement.addEventListener('click', () => {

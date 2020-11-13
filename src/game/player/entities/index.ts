@@ -1,6 +1,6 @@
 import { IPlayer } from './interface';
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: IPlayer = {
 	id: 'player',
@@ -24,6 +24,14 @@ export const { reducer, actions } = createSlice({
 		fall: state => ({
 			...state,
 			direction: 'down',
+		}),
+		move: (
+			state,
+			{ payload: { x, y } }: PayloadAction<{ x: number; y: number }>
+		) => ({
+			...state,
+			x,
+			y,
 		}),
 	},
 });
