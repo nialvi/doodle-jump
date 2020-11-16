@@ -1,12 +1,16 @@
 import { IPlayer } from '../entities/interface';
 
-export function movePlayer(
-	player: IPlayer,
-	leftBoandory: number
-): { x: number; y: number } {
-	if (player.x >= leftBoandory - player.width) {
-		return { x: player.x, y: player.y };
-	}
+export interface ICoordinates {
+	x: number;
+	y: number;
+}
 
-	return { x: player.x + 5, y: player.y };
+const SPEED = 1;
+
+export function moveUp(player: IPlayer): ICoordinates {
+	return { x: player.x, y: player.y + SPEED };
+}
+
+export function moveDown(player: IPlayer): ICoordinates {
+	return { x: player.x, y: player.y - SPEED };
 }

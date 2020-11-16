@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: IPlayer = {
 	id: 'player',
-	x: 0,
+	x: 100,
 	y: 0,
 	width: 87,
 	height: 85,
@@ -17,11 +17,11 @@ export const { reducer, actions } = createSlice({
 	name: 'player',
 	initialState,
 	reducers: {
-		jump: state => ({
+		jumpDirection: state => ({
 			...state,
 			direction: 'up',
 		}),
-		fall: state => ({
+		fallDirection: state => ({
 			...state,
 			direction: 'down',
 		}),

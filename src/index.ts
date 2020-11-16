@@ -13,9 +13,9 @@ import {
 	reducer as playerReducer,
 	actions as playerActions,
 } from './game/player/entities';
-import { movePlayer } from './game/player/useCases';
 
 import { init as initStore } from './game/@engine/store';
+import { jumpInMiddleScene } from 'game/startScene/useCases';
 import { render as renderStartScene } from './game/startScene/view';
 import { render as renderMainScene } from './game/mainScene/render';
 import { render as renderEndScene } from './game/endScene/view';
@@ -58,7 +58,15 @@ function initGameEngine() {
 
 		switch (state.scene.current) {
 			case 'start': {
-				const cord = movePlayer(state.player, window.outerWidth);
+				if (state.player.y >= state.player.height * 2) {
+					store.dispatch(playerActions.fallDirection());
+				}
+
+				if (state.player.y <= 0) {
+					store.dispatch(playerActions.jumpDirection());
+				}
+
+				const cord = jumpInMiddleScene(state.player);
 
 				store.dispatch(playerActions.move(cord));
 				renderStartScene(state, { player: playerElement });
