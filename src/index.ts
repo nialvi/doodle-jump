@@ -4,22 +4,26 @@ import {
 	reducer as gameReducer,
 	actions as gameActions,
 } from './game/@engine/entities';
-
 import {
 	reducer as sceneReducer,
 	actions as sceneActions,
 } from './game/@engine/scene/entities';
+import { init as initStore } from './game/@engine/store';
+import { Status } from 'game/@engine/scene/entities/interface';
+
 import {
 	reducer as playerReducer,
 	actions as playerActions,
-} from './game/player/entities';
+} from 'game/player/entities';
+import {
+	reducer as platformsReducer,
+	actions as platformsActions,
+} from 'game/platforms/entities';
 
-import { init as initStore } from './game/@engine/store';
 import { jumpInMiddleScene } from 'game/startScene/useCases';
 import { render as renderStartScene } from './game/startScene/view';
 import { render as renderMainScene } from './game/mainScene/render';
 import { render as renderEndScene } from './game/endScene/view';
-import { Status } from 'game/@engine/scene/entities/interface';
 
 document.addEventListener('DOMContentLoaded', () => {
 	// const config: InitConfig = {
@@ -36,7 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initGameEngine() {
 	const store = initStore({
-		reducer: { game: gameReducer, scene: sceneReducer, player: playerReducer },
+		reducer: {
+			game: gameReducer,
+			scene: sceneReducer,
+			player: playerReducer,
+			platforms: platformsReducer,
+		},
 		ignoredActions: [sceneActions.setObject.type],
 	});
 
@@ -47,8 +56,6 @@ function initGameEngine() {
 	const logElement = document.getElementById('log');
 	const playerElement = document.createElement('div');
 	const resultElement = document.createElement('div');
-
-	root.appendChild(playerElement);
 
 	const state = store.getState();
 	type Store = typeof store;
@@ -69,7 +76,7 @@ function initGameEngine() {
 				const cord = jumpInMiddleScene(state.player);
 
 				store.dispatch(playerActions.move(cord));
-				renderStartScene(state, { player: playerElement });
+				renderStartScene(state, { root, player: playerElement });
 				break;
 			}
 
