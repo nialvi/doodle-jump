@@ -1,5 +1,5 @@
-import { moveStraight, moveRight, moveLeft } from '../app/control';
-import { InitialState } from '../app';
+import { moveStraight, moveRight, moveLeft } from '../game/control';
+import { InitialState } from '../game';
 
 beforeEach(() => jest.useFakeTimers());
 

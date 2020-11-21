@@ -7,6 +7,7 @@ export function start(state: InitialState): void {
 	Object.keys(state.timers).forEach(name => clearInterval(state.timers[name]));
 
 	clearScreen(state.screen.element);
+	state.score = 0;
 
 	state.platforms = createPlatforms({
 		screen: state.screen.element,

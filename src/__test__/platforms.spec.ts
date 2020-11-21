@@ -2,7 +2,7 @@ import {
 	createPlatform,
 	createPlatforms,
 	movePlatforms,
-} from '../app/platforms';
+} from '../game/platforms';
 
 test('should render platform on screen', () => {
 	const screen = document.createElement('div');
