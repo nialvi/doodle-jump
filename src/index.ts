@@ -23,7 +23,7 @@ import {
 
 import { jumpInMiddleScene } from 'game/startScene/useCases';
 import { render as renderStartScene } from './game/startScene/view';
-import { render as renderMainScene } from './game/mainScene/render';
+import { render as renderMainScene } from './game/mainScene/view';
 import { render as renderEndScene } from './game/endScene/view';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,7 +47,6 @@ function initGameEngine() {
 			player: playerReducer,
 			platforms: platformsReducer,
 		},
-		ignoredActions: [sceneActions.setObject.type],
 	});
 
 	const root = document.body;
@@ -112,13 +111,6 @@ function initGameEngine() {
 
 	startElement.addEventListener('click', () => {
 		store.dispatch(sceneActions.setScene('inprogress'));
-
-		// store.dispatch(
-		// 	sceneActions.setMesh({
-		// 		width: window.outerWidth,
-		// 		height: window.outerHeight,
-		// 	})
-		// );
 	});
 
 	endElement.addEventListener('click', () => {

@@ -11,6 +11,5 @@ export type Scene = 'start' | 'inprogress' | 'end';
 export interface IScene {
 	current: Scene;
 	status: Status;
-	mesh: number[][];
 	objects?: IObject[];
 }
