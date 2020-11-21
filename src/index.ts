@@ -15,7 +15,7 @@ import {
 	reducer as playerReducer,
 	actions as playerActions,
 } from 'game/player/entities';
-import { control as playerControl } from 'game/player/control';
+import { initControl as initPlayerControl } from 'game/player/control';
 import {
 	reducer as platformsReducer,
 	actions as platformsActions,
@@ -58,7 +58,10 @@ function initGameEngine() {
 	const playerElement = document.createElement('div');
 	const resultElement = document.createElement('div');
 
-	document.addEventListener('keydown', playerControl);
+	document.addEventListener('keydown', initPlayerControl(store));
+	document.addEventListener('keyup', () =>
+		store.dispatch(playerActions.straightMove())
+	);
 
 	const state = store.getState();
 	type Store = typeof store;

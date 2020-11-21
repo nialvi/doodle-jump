@@ -9,6 +9,7 @@ const initialState: IPlayer = {
 	width: 87,
 	height: 85,
 	direction: 'up',
+	move: 'straight',
 	sprite: 'player',
 	status: 'enable',
 };
@@ -24,6 +25,18 @@ export const { reducer, actions } = createSlice({
 		fallDirection: state => ({
 			...state,
 			direction: 'down',
+		}),
+		leftMove: state => ({
+			...state,
+			move: 'left',
+		}),
+		rightMove: state => ({
+			...state,
+			move: 'right',
+		}),
+		straightMove: state => ({
+			...state,
+			move: 'straight',
 		}),
 		move: (
 			state,
